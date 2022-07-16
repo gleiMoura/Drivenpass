@@ -10,7 +10,7 @@ export async function createNewUser( user: CreateUserData ) {
     if( userData ) {
         throw {
             response:{
-                message: "User aready in use",
+                message: "User is in use",
                 status: 409
             }
         }
@@ -27,7 +27,7 @@ export async function generateToken( user: CreateUserData ) {
         throw {
             response:{
                 message: "Create a new profile",
-                status: 404
+                status: 401
             }
         }
     };
@@ -38,7 +38,7 @@ export async function generateToken( user: CreateUserData ) {
         throw {
             response: {
                 message: "Password is not valid",
-                status: 409
+                status: 401
             }
         }
     };
