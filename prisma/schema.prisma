@@ -11,6 +11,20 @@ model users {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
+  credentials credentials[]
 
   @@map("Users")
 }
+
+model credentials {
+  id  Int @id @default(autoincrement())
+  url String 
+  author users @relation(fields: [userName], references: [email])
+  userName String
+  password String
+  title String
+  
+  @@map("Credentials")
+}
+
+
