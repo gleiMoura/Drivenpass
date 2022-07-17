@@ -27,13 +27,19 @@ export async function createNewCredential( data: CreateCredentialData ) {
 
 export async function findCredentials( userId: number ) {
     const credentials = await findAllCredentials( userId );
-        
-    return credentials; 
+
+    const decryptCredentials = credentials.map(element => {
+        const cryptr = new Cryptr(process.env.SECRET);
+        const decryptPassword = cryptr.decrypt(element.password);
+
+        return {...element, password: decryptPassword};
+    } )
+    console.log(decryptCredentials)
+    return decryptCredentials; 
 };
 
 export async function findSpecificCredential( credentialId: string, userId: number ){
     const data = await findCredentialById( credentialId );
-    console.log("data -->", data)
     if( !data ) {
         throw {
             response: {
@@ -42,8 +48,6 @@ export async function findSpecificCredential( credentialId: string, userId: numb
             }
         }
     };
-
-    console.log("data userId->",typeof data.userId, "userId -> ", typeof userId)
 
     if( data.userId !== userId ) {
         throw {
