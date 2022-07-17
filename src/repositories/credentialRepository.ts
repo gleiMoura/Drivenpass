@@ -38,11 +38,20 @@ export async function findAllCredentials( userId: number ) {
 
 export async function findCredentialById( credentialId: string ) {
     const id = parseInt(credentialId);
-    const credential = prisma.credentials.findUnique({
+    const credential = await prisma.credentials.findUnique({
         where: {
             id
         }
     });
 
     return credential;
-}
+};
+
+export async function deleteCredentialById( credentialId: string ) {
+    const id = parseInt(credentialId);
+    await prisma.credentials.delete({
+        where: {
+            id
+        }
+    });
+};

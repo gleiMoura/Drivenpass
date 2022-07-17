@@ -31,3 +31,23 @@ export default function getUserIdByToken(authorization: string): number {
 
     return userId;
 };
+
+export function verifyCredential( data: {userId: number}, userId: number) {
+    if( !data ) {
+        throw {
+            response: {
+                message: "This credential doesn't exist",
+                status: 404
+            }
+        }
+    };
+
+    if( data.userId !== userId ) {
+        throw {
+            response:{
+                message: "this credential is not yours",
+                status: 422
+            }
+        }
+    }
+}
