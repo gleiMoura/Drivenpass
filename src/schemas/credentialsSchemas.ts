@@ -1,10 +1,10 @@
-import joi, { string } from "joi";
+import joi from "joi";
 
 const credentialsSchema = joi.object({
-    url: string().uri().required(),
-    userName: string().required(),
-    password: string().required(),
-    title: string().required()
+    url: joi.string().uri().required(),
+    userName: joi.string().required(),
+    password: joi.string().required(),
+    title: joi.string().required()
 });
 
 export default credentialsSchema;

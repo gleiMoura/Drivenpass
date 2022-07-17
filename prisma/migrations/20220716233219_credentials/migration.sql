@@ -2,6 +2,7 @@
 CREATE TABLE "Credentials" (
     "id" SERIAL NOT NULL,
     "url" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
     "userName" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -10,4 +11,4 @@ CREATE TABLE "Credentials" (
 );
 
 -- AddForeignKey
-ALTER TABLE "Credentials" ADD CONSTRAINT "Credentials_userName_fkey" FOREIGN KEY ("userName") REFERENCES "Users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Credentials" ADD CONSTRAINT "Credentials_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

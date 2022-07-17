@@ -26,7 +26,7 @@ export async function generateToken( user: CreateUserData ) {
     if( !userFromDatabase ) {
         throw {
             response:{
-                message: "Create a new profile",
+                message: "You must create a new profile",
                 status: 401
             }
         }
@@ -43,7 +43,7 @@ export async function generateToken( user: CreateUserData ) {
         }
     };
 
-    const token = jwt.sign({ email: user.email }, process.env.SECRET, {expiresIn: 3000});
+    const token = jwt.sign({ userId: userFromDatabase.id }, process.env.SECRET, {expiresIn: 3000});
 
     return token;
 }
