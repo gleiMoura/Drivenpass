@@ -25,4 +25,24 @@ export async function putCredentialInDatabase( credential : CreateCredentialData
     await prisma.credentials.create({
         data: { userId, userName, password, title, url }
     });
+};
+
+export async function findAllCredentials( userId: number ) {
+    const credentials = prisma.credentials.findMany({
+        where: {
+            userId
+        }
+    });
+    return credentials
+};
+
+export async function findCredentialById( credentialId: string ) {
+    const id = parseInt(credentialId);
+    const credential = prisma.credentials.findUnique({
+        where: {
+            id
+        }
+    });
+
+    return credential;
 }

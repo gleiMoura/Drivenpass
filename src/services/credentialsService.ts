@@ -1,7 +1,7 @@
 import Cryptr from "cryptr";
 import { findCredentialByUserIdAndTitle, putCredentialInDatabase} from "../repositories/credentialRepository.js";
 
-import { CreateCredentialData } from "../repositories/credentialRepository.js";// coming from prisma
+import { CreateCredentialData, findAllCredentials, findCredentialById } from "../repositories/credentialRepository.js"; //from prisma
 
 export async function createNewCredential( data: CreateCredentialData ) {
     const { userId, title }= data;
@@ -23,7 +23,40 @@ export async function createNewCredential( data: CreateCredentialData ) {
     await putCredentialInDatabase(newCredential);
     
     return newPassword;
+};
+
+export async function findCredentials( userId: number ) {
+    const credentials = await findAllCredentials( userId );
+        
+    return credentials; 
+};
+
+export async function findSpecificCredential( credentialId: string, userId: number ){
+    const data = await findCredentialById( credentialId );
+    console.log("data -->", data)
+    if( !data ) {
+        throw {
+            response: {
+                message: "This credential doesn't exist",
+                status: 404
+            }
+        }
+    };
+
+    console.log("data userId->",typeof data.userId, "userId -> ", typeof userId)
+
+    if( data.userId !== userId ) {
+        throw {
+            response:{
+                message: "this credential is not yours",
+                status: 422
+            }
+        }
+    }
+
+    return data;
 }
+
 
 
 

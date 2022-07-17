@@ -1,19 +1,39 @@
 import { Request, Response } from "express";
-import verifyToken from "../utils/tokenValidator.js";
-import { createNewCredential } from "../services/credentialsService.js";
-import { CreateCredentialData } from "../repositories/credentialRepository.js";
+import  getUserIdByToken from "../utils/tokenValidator.js"
+import { createNewCredential, findCredentials, findSpecificCredential } from "../services/credentialsService.js";
 
-export async function createCredential (req: Request, res: Response) {
-   const { authorization }:any = req.headers;
-   if( !authorization ) return res.status(422).send("Authorization problem"); 
-   const token = authorization?.replace("Bearer ", "");
+import { CreateCredentialData } from "../repositories/credentialRepository.js"; //from Prisma
+
+export async function createCredential(req: Request, res: Response) {
+   const { authorization } = req.headers;
+   const userId = getUserIdByToken( authorization );
 
    const { url, userName, password, title } = req.body;
-   const userId = verifyToken( token );
-
    const data: CreateCredentialData = { url, userName, password, title, userId };
-   
-   const newPassword = await createNewCredential( data );
 
-   res.status(201).send({...data, password: newPassword});
-}
+   const newPassword = await createNewCredential(data);
+
+   res.status(201).send({ ...data, password: newPassword });
+};
+
+export async function getAllCredentials(req: Request, res: Response) {
+   const { authorization } = req.headers;
+   const userId = getUserIdByToken( authorization );
+
+   const credentials = await findCredentials(userId);
+
+   res.status(200).send(credentials)
+};
+
+export async function getSpecificCredential(req: Request, res: Response) {
+   const { authorization } = req.headers;
+   const userId = getUserIdByToken( authorization );
+   const credentialId: string = req.params.id;
+
+   const credential = await findSpecificCredential( credentialId, userId );
+
+   res.status(200).send( credential );
+};
+
+
+
