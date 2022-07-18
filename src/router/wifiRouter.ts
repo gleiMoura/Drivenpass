@@ -11,4 +11,10 @@ const wifiRouter = Router();
 
 wifiRouter.post("/wifi", schemaValidator(wifiSchema), createWifi);
 
+wifiRouter.get("/wifi", getAllWifis);
+
+wifiRouter.get("/wifi/:id", getWifi);
+
+wifiRouter.delete("/wifi/:id", deleteWifi);
+
 export default wifiRouter;
