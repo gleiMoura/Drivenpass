@@ -1,8 +1,10 @@
 //this repository is to put function that many othres files can use
 import prisma from "../config/database.js";
 import { credentials } from "@prisma/client";
+import { cards } from "@prisma/client";
 
 export type CreateCredentialData = Omit<credentials, "id">
+export type CreateCardData = Omit<cards, "id">
 
 async function createElement(elements: any, tableName: string) {
     if (tableName === "credential") {
@@ -11,6 +13,10 @@ async function createElement(elements: any, tableName: string) {
         })
     } else if (tableName === "notes") {
         await prisma.notes.create({
+            data: { ...elements }
+        })
+    } else if (tableName === "cards") {
+        await prisma.cards.create({
             data: { ...elements }
         })
     }
@@ -30,6 +36,12 @@ export async function findByUserIdAndTitle(userId: number, title: string, tableN
             select: { notes: { where: { title } }
             }
         });
+    }else if (tableName === "cards") {
+        element = await prisma.users.findUnique({
+            where: { id: userId },
+            select: { cards: { where: { title } }
+            }
+        });
     }
     return element;
 };
@@ -44,6 +56,12 @@ async function findAllElements( userId: number, tableName: string ) {
         });
     }else if(tableName === "notes") {
         elements = prisma.notes.findMany({
+            where: {
+                userId
+            }
+        });
+    }else if(tableName === "cards") {
+        elements = prisma.cards.findMany({
             where: {
                 userId
             }
@@ -69,6 +87,12 @@ export async function findElementById( elementId: string, tableName: string ) {
                 id
             }
         });
+    }else if(tableName === "cards") {
+        element = await prisma.cards.findUnique({
+            where: {
+                id
+            }
+        });
     }
 
     return element;
@@ -85,6 +109,12 @@ async function deleteElementById( elementId: string, tableName: string ) {
         });
     }else if(tableName === "notes") {
         await prisma.notes.delete({
+            where: {
+                id
+            }
+        });
+    }else if(tableName === "cards") {
+        await prisma.cards.delete({
             where: {
                 id
             }

@@ -12,6 +12,7 @@ model users {
   email       String        @unique
   password    String
   credentials credentials[]
+  cards       cards[]
   notes       notes[]
 
   @@map("Users")
@@ -35,4 +36,18 @@ model notes {
   note   String
   userId Int
   user   users  @relation(fields: [userId], references: [id])
+}
+
+model cards {
+  id         Int      @id @default(autoincrement())
+  title      String
+  cardNumber String
+  holderName String
+  secureCode String
+  expireDate String
+  isVirtual  Boolean  @default(false)
+  type       String
+  userId     Int
+  password   String
+  user       users    @relation(fields: [userId], references: [id])
 }
