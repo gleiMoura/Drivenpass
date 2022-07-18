@@ -25,15 +25,23 @@ export async function createNewCard( data: CreateCardData ){
 };
 
 export async function findCards( userId: number ){
-    const cards = await sharedRepository.findAllElements( userId, "credential" );
+    const cards = await sharedRepository.findAllElements( userId, "cards" );
 
     return cards; 
 }
 
 export async function findSpecificCard( cardId:string, userId: number ){
-    const data = await sharedRepository.findElementById( cardId, "credential" );
+    const data = await sharedRepository.findElementById( cardId, "cards" );
     
     verifyElement(data, userId, "cards");
 
     return data;
+};
+
+export async function deleteCardFromDatabase( cardId:string, userId: number ){
+    const data = await sharedRepository.findElementById( cardId, "cards" );
+    
+    verifyElement(data, userId, "cards");
+
+    await sharedRepository.deleteElementById(cardId, "cards");
 }
