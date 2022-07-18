@@ -1,8 +1,7 @@
 import Cryptr from "cryptr";
-import sharedRepository from "../router/sharedRepository.js";
+import sharedRepository from "../repositories/sharedRepository.js";
 
 import { CreateCredentialData, 
-        findAllCredentials, 
         findCredentialById,
         deleteCredentialById } from "../repositories/credentialRepository.js"; //from prisma
 import { verifyElement } from "../utils/sharedUtils.js";
@@ -25,12 +24,10 @@ export async function createNewCredential( data: CreateCredentialData ) {
     const newCredential = {...data, password: newPassword}
 
     await sharedRepository.createElement(newCredential, "credential");
-    
-    return newPassword;
 };
 
 export async function findCredentials( userId: number ) {
-    const credentials = await findAllCredentials( userId );
+    const credentials = await sharedRepository.findAllElements( userId, "credential" );
 
     const decryptCredentials = credentials.map(element => {
         const cryptr = new Cryptr(process.env.SECRET);
@@ -38,7 +35,7 @@ export async function findCredentials( userId: number ) {
 
         return {...element, password: decryptPassword};
     } )
-    console.log(decryptCredentials)
+
     return decryptCredentials; 
 };
 

@@ -16,9 +16,11 @@ export async function createCredential(req: Request, res: Response) {
    const { url, userName, password, title } = req.body;
    const data: CreateCredentialData = { url, userName, password, title, userId };
 
-   const newPassword = await createNewCredential(data);
+   await createNewCredential(data);
 
-   res.status(201).send({ ...data, password: newPassword });
+   delete(data.password);
+
+   res.status(201).send({ ...data });
 };
 
 export async function getAllCredentials(req: Request, res: Response) {

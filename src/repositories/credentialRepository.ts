@@ -3,15 +3,6 @@ import { credentials } from "@prisma/client";
 
 export type CreateCredentialData = Omit<credentials,"id">
 
-export async function findAllCredentials( userId: number ) {
-    const credentials = prisma.credentials.findMany({
-        where: {
-            userId
-        }
-    });
-    return credentials
-};
-
 export async function findCredentialById( credentialId: string ) {
     const id = parseInt(credentialId);
     const credential = await prisma.credentials.findUnique({

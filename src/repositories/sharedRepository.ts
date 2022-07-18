@@ -32,11 +32,31 @@ export async function findByUserIdAndTitle(userId: number, title: string, tableN
         });
     }
     return element;
-}
+};
+
+async function findAllElements( userId: number, tableName: string ) {
+    let elements = null;
+    if(tableName === "credential") {
+        elements = prisma.credentials.findMany({
+            where: {
+                userId
+            }
+        });
+    }else if(tableName === "notes") {
+        elements = prisma.notes.findMany({
+            where: {
+                userId
+            }
+        });
+    }
+   
+    return elements
+};
 
 const sharedRepository = {
     createElement,
-    findByUserIdAndTitle
+    findByUserIdAndTitle,
+    findAllElements
 };
 
 export default sharedRepository;

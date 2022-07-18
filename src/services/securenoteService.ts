@@ -1,5 +1,5 @@
 import { notes } from "@prisma/client";
-import sharedRepository from "../router/sharedRepository.js";
+import sharedRepository from "../repositories/sharedRepository.js";
 
 export type CreateNoteData = Omit<notes, "id">;
 
@@ -16,4 +16,19 @@ export async function createNewNote( securenote: CreateNoteData ) {
     };
 
     await sharedRepository.createElement( securenote, "notes" );
+};
+
+export async function findManyNotes(userId: number) {
+    const notes = await sharedRepository.findAllElements(userId, "notes");
+
+    if( !notes ) {
+        throw {
+            response:{
+                message: "Notes doesn't exist in database",
+                status: 404
+            }
+        }
+    }
+
+    return notes
 }
