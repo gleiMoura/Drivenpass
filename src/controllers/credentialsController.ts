@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import  getUserIdByToken from "../utils/credentialUtil.js"
+import  getUserIdByToken from "../utils/sharedUtils.js"
 import {
    createNewCredential, 
    findCredentials, 

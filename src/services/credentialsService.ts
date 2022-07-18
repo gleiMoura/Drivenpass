@@ -1,16 +1,15 @@
 import Cryptr from "cryptr";
-import { findCredentialByUserIdAndTitle, 
-        putCredentialInDatabase} from "../repositories/credentialRepository.js";
+import sharedRepository from "../router/sharedRepository.js";
 
 import { CreateCredentialData, 
         findAllCredentials, 
         findCredentialById,
         deleteCredentialById } from "../repositories/credentialRepository.js"; //from prisma
-import { verifyCredential } from "../utils/credentialUtil.js";
+import { verifyElement } from "../utils/sharedUtils.js";
 
 export async function createNewCredential( data: CreateCredentialData ) {
     const { userId, title }= data;
-    const credential = await findCredentialByUserIdAndTitle( userId, title);
+    const credential = await sharedRepository.findByUserIdAndTitle(userId, title, "credential");
     if( credential.credentials.length !== 0 ) {
         throw {
             response: {
@@ -25,7 +24,7 @@ export async function createNewCredential( data: CreateCredentialData ) {
 
     const newCredential = {...data, password: newPassword}
 
-    await putCredentialInDatabase(newCredential);
+    await sharedRepository.createElement(newCredential, "credential");
     
     return newPassword;
 };
@@ -46,7 +45,7 @@ export async function findCredentials( userId: number ) {
 export async function findSpecificCredential( credentialId: string, userId: number ){
     const data = await findCredentialById( credentialId );
     
-    verifyCredential(data, userId);
+    verifyElement(data, userId, "credential");
 
     return data;
 };
@@ -54,7 +53,7 @@ export async function findSpecificCredential( credentialId: string, userId: numb
 export async function deleteCredentialFromDatabase( credentialId: string, userId: number ) {
     const data = await findCredentialById( credentialId );
     
-    verifyCredential(data, userId);
+    verifyElement(data, userId, "credential");
 
     await deleteCredentialById(credentialId);
 }

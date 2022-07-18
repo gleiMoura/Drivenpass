@@ -32,11 +32,11 @@ export default function getUserIdByToken(authorization: string): number {
     return userId;
 };
 
-export function verifyCredential( data: {userId: number}, userId: number) {
+export function verifyElement( data: {userId: number}, userId: number, element: string) {
     if( !data ) {
         throw {
             response: {
-                message: "This credential doesn't exist",
+                message: `This ${element} doesn't exist`,
                 status: 404
             }
         }
@@ -45,7 +45,7 @@ export function verifyCredential( data: {userId: number}, userId: number) {
     if( data.userId !== userId ) {
         throw {
             response:{
-                message: "this credential is not yours",
+                message: `this ${element} is not yours`,
                 status: 422
             }
         }
