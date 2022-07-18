@@ -1,9 +1,8 @@
 import Cryptr from "cryptr";
 import sharedRepository from "../repositories/sharedRepository.js";
-
-import { CreateCredentialData, 
-        deleteCredentialById } from "../repositories/credentialRepository.js"; //from prisma
 import { verifyElement } from "../utils/sharedUtils.js";
+
+import { CreateCredentialData } from "../repositories/sharedRepository.js"; //type from prisma
 
 export async function createNewCredential( data: CreateCredentialData ) {
     const { userId, title }= data;
@@ -51,7 +50,7 @@ export async function deleteCredentialFromDatabase( credentialId: string, userId
     
     verifyElement(data, userId, "credential");
 
-    await deleteCredentialById(credentialId);
+    await sharedRepository.deleteElementById(credentialId, "credential");
 }
 
 

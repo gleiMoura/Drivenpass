@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
     createNewNote,
+    deleteNote,
     findManyNotes,
     findSpecificNote
 } from "../services/securenoteService.js";
@@ -31,10 +32,20 @@ export async function getAllNotes(req: Request, res: Response) {
 
 export async function getSpecificNote(req: Request, res: Response) {
     const { authorization } = req.headers;
-    const userId = getUserIdByToken( authorization );
+    const userId = getUserIdByToken(authorization);
     const noteId: string = req.params.id;
- 
-    const note = await findSpecificNote( noteId, userId );
- 
-    res.status(200).send( note );
+
+    const note = await findSpecificNote(noteId, userId);
+
+    res.status(200).send(note);
+};
+
+export async function deleteSpecificNote(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    const userId = getUserIdByToken(authorization);
+    const noteId = req.params.id;
+
+    await deleteNote(noteId, userId);
+
+    res.status(200).send("Note was deleted!")
 }

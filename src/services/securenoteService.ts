@@ -40,4 +40,12 @@ export async function findSpecificNote(noteId: string, userId: number) {
     verifyElement(data, userId, "credential");
 
     return data;
+};
+
+export async function deleteNote(noteId: string, userId: number) {
+    const data = await sharedRepository.findElementById( noteId, "credential" );
+    
+    verifyElement(data, userId, "notes");
+
+    await sharedRepository.deleteElementById(noteId, "credential");
 }

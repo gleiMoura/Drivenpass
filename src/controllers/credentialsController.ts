@@ -7,7 +7,7 @@ import {
    deleteCredentialFromDatabase
 } from "../services/credentialsService.js";
 
-import { CreateCredentialData } from "../repositories/credentialRepository.js"; //from Prisma
+import { CreateCredentialData } from "../repositories/sharedRepository.js"; //from Prisma
 
 export async function createCredential(req: Request, res: Response) {
    const { authorization } = req.headers;

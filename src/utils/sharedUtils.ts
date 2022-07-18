@@ -36,7 +36,7 @@ export function verifyElement( data: {userId: number}, userId: number, element: 
     if( !data ) {
         throw {
             response: {
-                message: `This ${element} doesn't exist`,
+                message: `This/those ${element} doesn't exist`,
                 status: 404
             }
         }

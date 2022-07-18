@@ -74,11 +74,30 @@ export async function findElementById( elementId: string, tableName: string ) {
     return element;
 };
 
+async function deleteElementById( elementId: string, tableName: string ) {
+    const id = parseInt(elementId);
+
+    if(tableName === "credential") {
+        await prisma.credentials.delete({
+            where: {
+                id
+            }
+        });
+    }else if(tableName === "notes") {
+        await prisma.notes.delete({
+            where: {
+                id
+            }
+        });
+    }
+};
+
 const sharedRepository = {
     createElement,
     findByUserIdAndTitle,
     findAllElements,
-    findElementById
+    findElementById,
+    deleteElementById
 };
 
 export default sharedRepository;
