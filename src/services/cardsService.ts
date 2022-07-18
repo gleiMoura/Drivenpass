@@ -4,7 +4,17 @@ import sharedRepository from "../repositories/sharedRepository.js";
 import { verifyElement } from "../utils/sharedUtils.js";
 
 export async function createNewCard( data: CreateCardData ){
-    const { userId, title }= data;
+    const { userId, title, type }= data;
+
+    if(type !== "debit" && type !== "credit" && type !== "credit_debit" ){
+        throw {
+            response: {
+                message: "card is not valid",
+                status: 401
+            }
+        }
+    }
+
     const card = await sharedRepository.findByUserIdAndTitle(userId, title, "cards");
     if( card.cards.length !== 0 ) {
         throw {

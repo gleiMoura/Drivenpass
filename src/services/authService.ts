@@ -43,7 +43,7 @@ export async function generateToken( user: CreateUserData ) {
         }
     };
 
-    const token = jwt.sign({ userId: userFromDatabase.id }, process.env.SECRET, {expiresIn: 3000});
+    const token = jwt.sign({ userId: userFromDatabase.id }, process.env.SECRET, {expiresIn: 36000});
 
     return token;
 }

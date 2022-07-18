@@ -16,7 +16,7 @@ export async function createSecurenote(req: Request, res: Response) {
     const { title, note } = req.body;
     const securenote: CreateNoteData = { title, note, userId };
 
-    createNewNote(securenote);
+    await createNewNote(securenote);
 
     res.status(200).send("note was created!")
 };

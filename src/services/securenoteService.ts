@@ -1,3 +1,4 @@
+import Cryptr from "cryptr";
 import { notes } from "@prisma/client";
 import sharedRepository from "../repositories/sharedRepository.js";
 import { verifyElement } from "../utils/sharedUtils.js";
@@ -16,7 +17,10 @@ export async function createNewNote( securenote: CreateNoteData ) {
         }
     };
 
-    await sharedRepository.createElement( securenote, "notes" );
+    const cryptr = new Cryptr( process.env.SECRET );
+    const cryptNote = cryptr.encrypt(securenote.note);
+
+    await sharedRepository.createElement( {...securenote, note: cryptNote}, "notes" );
 };
 
 export async function findManyNotes(userId: number) {
@@ -35,17 +39,17 @@ export async function findManyNotes(userId: number) {
 };
 
 export async function findSpecificNote(noteId: string, userId: number) {
-    const data = await sharedRepository.findElementById( noteId, "credential" );
+    const data = await sharedRepository.findElementById( noteId, "notes" );
     
-    verifyElement(data, userId, "credential");
+    verifyElement(data, userId, "notes");
 
     return data;
 };
 
 export async function deleteNote(noteId: string, userId: number) {
-    const data = await sharedRepository.findElementById( noteId, "credential" );
+    const data = await sharedRepository.findElementById( noteId, "notes" );
     
     verifyElement(data, userId, "notes");
 
-    await sharedRepository.deleteElementById(noteId, "credential");
+    await sharedRepository.deleteElementById(noteId, "notes");
 }
