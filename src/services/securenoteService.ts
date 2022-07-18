@@ -1,5 +1,6 @@
 import { notes } from "@prisma/client";
 import sharedRepository from "../repositories/sharedRepository.js";
+import { verifyElement } from "../utils/sharedUtils.js";
 
 export type CreateNoteData = Omit<notes, "id">;
 
@@ -31,4 +32,12 @@ export async function findManyNotes(userId: number) {
     }
 
     return notes
+};
+
+export async function findSpecificNote(noteId: string, userId: number) {
+    const data = await sharedRepository.findElementById( noteId, "credential" );
+    
+    verifyElement(data, userId, "credential");
+
+    return data;
 }

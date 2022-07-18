@@ -2,7 +2,6 @@ import Cryptr from "cryptr";
 import sharedRepository from "../repositories/sharedRepository.js";
 
 import { CreateCredentialData, 
-        findCredentialById,
         deleteCredentialById } from "../repositories/credentialRepository.js"; //from prisma
 import { verifyElement } from "../utils/sharedUtils.js";
 
@@ -40,7 +39,7 @@ export async function findCredentials( userId: number ) {
 };
 
 export async function findSpecificCredential( credentialId: string, userId: number ){
-    const data = await findCredentialById( credentialId );
+    const data = await sharedRepository.findElementById( credentialId, "credential" );
     
     verifyElement(data, userId, "credential");
 
@@ -48,7 +47,7 @@ export async function findSpecificCredential( credentialId: string, userId: numb
 };
 
 export async function deleteCredentialFromDatabase( credentialId: string, userId: number ) {
-    const data = await findCredentialById( credentialId );
+    const data = await sharedRepository.findElementById( credentialId, "credential" );
     
     verifyElement(data, userId, "credential");
 

@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { createNewNote, findManyNotes } from "../services/securenoteService.js";
+import {
+    createNewNote,
+    findManyNotes,
+    findSpecificNote
+} from "../services/securenoteService.js";
 import getUserIdByToken from "../utils/sharedUtils.js";
 
 import { CreateNoteData } from "../services/securenoteService.js";
@@ -23,4 +27,14 @@ export async function getAllNotes(req: Request, res: Response) {
     const notes = await findManyNotes(userId);
 
     res.status(200).send(notes);
+};
+
+export async function getSpecificNote(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    const userId = getUserIdByToken( authorization );
+    const noteId: string = req.params.id;
+ 
+    const note = await findSpecificNote( noteId, userId );
+ 
+    res.status(200).send( note );
 }

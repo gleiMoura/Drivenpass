@@ -53,10 +53,32 @@ async function findAllElements( userId: number, tableName: string ) {
     return elements
 };
 
+export async function findElementById( elementId: string, tableName: string ) {
+    const id = parseInt(elementId);
+    let element = null;
+
+    if(tableName === "credential") {
+        element = await prisma.credentials.findUnique({
+            where: {
+                id
+            }
+        });
+    }else if(tableName === "notes") {
+        element = await prisma.notes.findUnique({
+            where: {
+                id
+            }
+        });
+    }
+
+    return element;
+};
+
 const sharedRepository = {
     createElement,
     findByUserIdAndTitle,
-    findAllElements
+    findAllElements,
+    findElementById
 };
 
 export default sharedRepository;
