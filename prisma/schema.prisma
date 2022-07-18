@@ -14,6 +14,7 @@ model users {
   credentials credentials[]
   cards       cards[]
   notes       notes[]
+  wifi wifi[]
 
   @@map("Users")
 }
@@ -49,5 +50,14 @@ model cards {
   type       String
   userId     Int
   password   String
+  user       users    @relation(fields: [userId], references: [id])
+}
+
+model wifi {
+  id Int @id @default(autoincrement())
+  title String
+  networkName String
+  password String
+  userId Int
   user       users    @relation(fields: [userId], references: [id])
 }
