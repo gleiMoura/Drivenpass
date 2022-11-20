@@ -107,7 +107,6 @@ POST /credential
 | `username` | `string` | **Required**. user name                 |
 | `title`    | `string` | **Required**. identifier for credential |
 | `password` | `string` | **Required**. password   
-| `userId` | `number` | **Required**. user id                |
 
 </br>
 
